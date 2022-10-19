@@ -1,0 +1,22 @@
+type: choice
+is_multiple_choice: false
+options:
+- text: Create your own style and follow it.
+- text: Every programmer has their own unique coding style.
+- text: Style is nonsense, you can write your code in a free manner.
+- text: All programmers create code according to coding style guides.
+files:
+- name: src/Main.kt
+  visible: true
+  text: |
+    // You can experiment here, it won’t be checked
+
+    fun main(args: Array<String>) {
+      // put your code here
+    }
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/4423#comment
+status: Solved
+record: -1
+custom_name: Which is better?
+local_check: false

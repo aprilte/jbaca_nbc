@@ -1,0 +1,22 @@
+type: choice
+is_multiple_choice: true
+options:
+- text: Put a tab after "//"
+- text: 4 spaces for indentation instead of one tab
+- text: Closing curly brace at the beginning of the next line
+- text: Opening curly brace at the end of the line
+- text: Omit semicolons
+files:
+- name: src/Main.kt
+  visible: true
+  text: |
+    // You can experiment here, it won’t be checked
+
+    fun main(args: Array<String>) {
+      // put your code here
+    }
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/20639#comment
+status: Solved
+record: -1
+local_check: false
