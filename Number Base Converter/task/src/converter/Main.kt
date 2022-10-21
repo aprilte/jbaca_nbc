@@ -1,38 +1,91 @@
-package converter// Do not delete this line
+package converter
+
+import java.math.BigInteger
+
+// Do not delete this line
 
 fun main() {
     val conta = Converter()
-
+    val ssm: String = "AGH"
+    println(ssm.toBigIntegerOrNull(31))
 }
 
 class Converter() {
-    var inputDec: Int = 0
+    var inputDec: BigInteger = BigInteger.ZERO
     var inputSomething:String = ""
     var status: Boolean = false
     var mode: String = "From"
+    var fromRadix: Int = 10
+    var toRadix: Int = 2
+    var convSeq: String = "do"
 
     init {
         while(mode != "None") {
             cont()
+            if (this.isEnableRadix()) {
+                while(convSeq != "back") {
+                    sconv()//すこんぶ
+                    if (convSeq == "do") {
+                        convResult()
+                    } else {
+                    }
+                }
+            } else {
+                println("radix supports 36 or lower")
+            }
             status = false
             println()
         }
     }
 
     fun cont() {
-        print("Do you want to convert /from decimal or /to decimal? (To quit type /exit) ")
-        val select = readln()
-        if (select == "/from") {
-            print("Enter number in decimal system:")
-            convFromDec()
-        } else if (select == "/to") {
-            print("Enter source number:")
-            mode = "To"
-            convToDec()
-        } else {
+        print("Enter two numbers in format: {source base} {target base} (To quit type /exit) ")
+        val select = readln().split(" ")
+        if (select.first() == "/exit") {
             status = true
             mode = "None"
+        } else {
+            try {
+                fromRadix = select.first().toInt()
+                toRadix = select.last().toInt()
+                println("${fromRadix}->${toRadix}")
+                this.convSeq = "do"
+            } catch (ex: Exception) {
+                println("invalid input... available format:{source base} {target base}")
+            }
         }
+    }
+
+    fun isEnableRadix(): Boolean {
+        return (fromRadix % 2 == 0) && (toRadix % 2 == 0)
+    }
+
+    fun sconv() {
+        this.convSeq = "do"
+        print("Enter number in base ${fromRadix} to convert to base ${toRadix} (To go back type /back) > ")
+        val inputter = readln()
+        if (inputter == "/back") {
+            this.convSeq = "back"
+        } else {
+            val regm = Regex("[0-9a-zA-Z]+")
+            if (regm.matches(inputter)) {
+                inputSomething = inputter
+            } else {
+                println("invalid input format, 0-9_a-z_A-Z")
+                this.convSeq = "retry"
+            }
+        }
+    }
+
+    fun convResult() {
+        println("good!")
+    }
+
+    fun convByRadix() {
+        this.inputDec = this.inputSomething.toBigIntegerOrNull(this.fromRadix)!!
+    }
+    fun convByExRadix(radix: Int) {
+        this.inputDec = this.inputSomething.toBigIntegerOrNull(radix)!!
     }
 
     fun convFromDec() {
@@ -42,7 +95,7 @@ class Converter() {
                 if (inputter == "") {
                     status = true
                 } else {
-                    inputDec = inputter.toInt()
+                    inputDec = inputter.toBigInteger()
                     status = true
                 }
             } catch (ex: Exception) {
@@ -85,21 +138,21 @@ class Converter() {
     }
 
 
-    fun printAnyType(value: Int) {
+    fun printAnyType(value: BigInteger) {
         println("Well,well... I'll tell you everything.")
         printInBin(value)
         printInOct(value)
         printInHex(value)
     }
 
-    fun printInBin(value: Int) {
-        println("Conversion result: " + Integer.toBinaryString(value))
+    fun printInBin(value: BigInteger) {
+        println("Conversion result: " + value.toString(2))
     }
-    fun printInHex(value: Int) {
-        println("Conversion result: ${String.format("%x", value)}")
+    fun printInHex(value: BigInteger) {
+        println("Conversion result: " + value.toString(16))
     }
-    fun printInOct(value: Int) {
-        println("Conversion result: ${String.format("%o", value)}")
+    fun printInOct(value: BigInteger) {
+        println("Conversion result: " + value.toString(8))
     }
 
 }
