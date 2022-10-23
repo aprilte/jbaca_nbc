@@ -6,8 +6,6 @@ import java.math.BigInteger
 
 fun main() {
     val conta = Converter()
-    val ssm: String = "AGH"
-    println(ssm.toBigIntegerOrNull(31))
 }
 
 class Converter() {
@@ -22,7 +20,7 @@ class Converter() {
     init {
         while(mode != "None") {
             cont()
-            if (this.isEnableRadix()) {
+            if (mode != "None" && this.isEnableRadix()) {
                 while(convSeq != "back") {
                     sconv()//すこんぶ
                     if (convSeq == "do") {
@@ -31,7 +29,9 @@ class Converter() {
                     }
                 }
             } else {
-                println("radix supports 36 or lower")
+                if ( mode != "None" ) {
+                    println("radix supports 36 or lower")
+                }
             }
             status = false
             println()
@@ -48,7 +48,7 @@ class Converter() {
             try {
                 fromRadix = select.first().toInt()
                 toRadix = select.last().toInt()
-                println("${fromRadix}->${toRadix}")
+//                println("${fromRadix}->${toRadix}")
                 this.convSeq = "do"
             } catch (ex: Exception) {
                 println("invalid input... available format:{source base} {target base}")
@@ -57,7 +57,7 @@ class Converter() {
     }
 
     fun isEnableRadix(): Boolean {
-        return (fromRadix % 2 == 0) && (toRadix % 2 == 0)
+        return (fromRadix % 2 == 0) && (toRadix % 2 == 0) || true
     }
 
     fun sconv() {
@@ -69,7 +69,8 @@ class Converter() {
         } else {
             val regm = Regex("[0-9a-zA-Z]+")
             if (regm.matches(inputter)) {
-                inputSomething = inputter
+                this.inputSomething = inputter
+                this.inputDec = inputSomething.toBigInteger(this.fromRadix)
             } else {
                 println("invalid input format, 0-9_a-z_A-Z")
                 this.convSeq = "retry"
@@ -78,14 +79,7 @@ class Converter() {
     }
 
     fun convResult() {
-        println("good!")
-    }
-
-    fun convByRadix() {
-        this.inputDec = this.inputSomething.toBigIntegerOrNull(this.fromRadix)!!
-    }
-    fun convByExRadix(radix: Int) {
-        this.inputDec = this.inputSomething.toBigIntegerOrNull(radix)!!
+        println("Conversion result: ${this.inputDec.toString(this.toRadix)}\n")
     }
 
     fun convFromDec() {
