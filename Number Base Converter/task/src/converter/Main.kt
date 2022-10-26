@@ -1,11 +1,103 @@
 package converter
 
 import java.math.BigInteger
+import java.math.BigDecimal
 
 // Do not delete this line
 
 fun main() {
-    val conta = Converter()
+    val conta = ConvDecimal()
+}
+
+class ConvDecimal() {
+    var inputDec: BigInteger = BigInteger.ZERO
+    var inputFloat: BigDecimal = BigDecimal.ZERO
+    var floater = false
+    var inputSomething:String = ""
+    var status: Boolean = false
+    var mode: String = "From"
+    var fromRadix: Int = 10
+    var toRadix: Int = 2
+    var convSeq: String = "do"
+
+    init {
+        while(mode != "None") {
+            cont()
+            if (mode != "None" && this.isEnableRadix()) {
+                while(convSeq != "back") {
+                    sconv()//すこんぶ
+                    if (convSeq == "do") {
+                        convResult()
+                    } else {
+                    }
+                }
+            } else {
+                if ( mode != "None" ) {
+                    println("radix supports 36 or lower")
+                }
+            }
+            status = false
+            println()
+        }
+    }
+
+    fun cont() {
+        print("Enter two numbers in format: {source base} {target base} (To quit type /exit) ")
+        val select = readln().split(" ")
+        if (select.first() == "/exit") {
+            status = true
+            mode = "None"
+        } else {
+            try {
+                fromRadix = select.first().toInt()
+                toRadix = select.last().toInt()
+//                println("${fromRadix}->${toRadix}")
+                this.convSeq = "do"
+            } catch (ex: Exception) {
+                println("invalid input... available format:{source base} {target base}")
+            }
+        }
+    }
+
+    fun isEnableRadix(): Boolean {
+        return (fromRadix % 2 == 0) && (toRadix % 2 == 0) || true
+    }
+
+    fun sconv() {
+        this.convSeq = "do"
+        print("Enter number in base ${fromRadix} to convert to base ${toRadix} (To go back type /back) > ")
+        val inputter = readln()
+        if (inputter == "/back") {
+            this.convSeq = "back"
+        } else {
+            val regm = Regex("[0-9a-zA-Z]+")
+            val regmf = Regex("[0-9a-zA-Z.]+")
+
+            if (regm.matches(inputter)) {
+                this.inputSomething = inputter
+                this.inputDec = inputSomething.toBigInteger(this.fromRadix)
+                this.floater = false
+            } else {
+                if (regmf.matches(inputter)) {
+                    this.inputSomething = inputter
+                    this.inputFloat = inputSomething.toBigDecimal()
+                    this.floater = true
+                } else {
+                    println("invalid input format, 0-9_a-z_A-Z_'.'")
+                    this.convSeq = "retry"
+                }
+            }
+        }
+    }
+
+    fun convResult() {
+        if (!floater) {
+            println("Conversion result: ${this.inputDec.toString(this.toRadix)}\n")
+        } else {
+            println("TODO(convert bigdecimal to any radix)....\n")
+        }
+    }
+
 }
 
 class Converter() {
