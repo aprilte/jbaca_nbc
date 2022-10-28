@@ -2,11 +2,18 @@ package converter
 
 import java.math.BigInteger
 import java.math.BigDecimal
+import java.math.RoundingMode
+import kotlin.math.pow
 
 // Do not delete this line
+const val ROUND_TABLE: Int = 5
 
 fun main() {
-    val ccc: BigDecimal = BigDecimal(0.234)
+
+    println("cvtest::" + convertFraction("13a", 21, ROUND_TABLE).toString())
+    println("toGoodDecimal::" + toGoodDecimal("4242.13a", 21))
+
+    val ccc: BigDecimal = BigDecimal(10.234)
     println(toFraction(ccc, 7))
     val conta = ConvDecimal()
 }
@@ -104,14 +111,15 @@ class ConvDecimal() {
 
 /**
  * Bigdecimalの少数付き基数変換
- * @args [inputVal] 元の値(BigDecimal)
- * @args [radix] 変換したい基数
- * @return return 小数点以下部分を文字列で返す 0.xxxx
+ * @param[inputVal] 元の値(BigDecimal)
+ * @param[radix] 変換したい基数
+ * @return return 変換結果を文字列で返す XXX.xxxxx
  */
 fun toFraction(inputVal: BigDecimal, radix: Int): String {
+    val intPartStr = inputVal.toInt().toBigInteger().toString(radix)
     var fract = inputVal - inputVal.toInt().toBigDecimal()
 
-    var retStr = "0."
+    var retStr = intPartStr + "."
     var condt = true
     var i = 0
     while (condt) {
@@ -138,6 +146,44 @@ fun toFraction(inputVal: BigDecimal, radix: Int): String {
     return retStr
 }
 
+/**
+ * 文字列として与えた数値系列を指定した基数において10進数へ変換し文字列で返す
+ * @param[inStr] 入力文字列
+ * @param[radix] 入力文字列の基数
+ * @return return 10進数表現のBigDecimal　XXX.xxxxx
+ */
+fun toGoodDecimal(inStr: String, radix: Int): BigDecimal {
+    var retVal: BigDecimal = BigDecimal.ZERO
+    val inSep = inStr.split(".")
+    var intPart: BigInteger = BigInteger.ZERO
+    var fractPart: BigDecimal = BigDecimal.ZERO
+    if (inSep.size == 2) {
+        intPart = inSep[0].toBigInteger(radix)
+        fractPart = convertFraction(inSep[1], radix, 5)
+    } else {
+        intPart = inSep[0].toBigInteger(radix)
+    }
+
+    return intPart.toBigDecimal() + fractPart
+}
+
+/**
+ * 少数以下文字列を指定した基数における10進数へ変換する
+ * @param[inStr] いつもの
+ * @param[radix] いつもの
+ * @param[rounder] 何桁までほしいか　0 <
+ * @return return 10進数表現での　小数点以下部分のみをBigDecimalで返す 0.xxxxx:{5桁の場合}
+ */
+fun convertFraction(inStr: String, radix: Int, rounder: Int): BigDecimal {
+    var retVal: BigDecimal = BigDecimal.ZERO
+    var decimate: Double = 0.0
+    inStr.withIndex().forEach {
+        val setbyradix = it.value.toString().toBigInteger(radix)
+        val based = 1.0 / (radix.toDouble().pow(it.index + 1 ))
+        decimate += setbyradix.toDouble() * based
+    }
+    return decimate.toBigDecimal().setScale(rounder, RoundingMode.HALF_UP)
+}
 
 class Converter() {
     var inputDec: BigInteger = BigInteger.ZERO
