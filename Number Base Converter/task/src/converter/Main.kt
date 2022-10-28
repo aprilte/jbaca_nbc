@@ -6,6 +6,8 @@ import java.math.BigDecimal
 // Do not delete this line
 
 fun main() {
+    val ccc: BigDecimal = BigDecimal(0.234)
+    println(toFraction(ccc, 7))
     val conta = ConvDecimal()
 }
 
@@ -60,7 +62,7 @@ class ConvDecimal() {
     }
 
     fun isEnableRadix(): Boolean {
-        return (fromRadix % 2 == 0) && (toRadix % 2 == 0) || true
+        return (fromRadix != 0) && (toRadix != 0)
     }
 
     fun sconv() {
@@ -97,8 +99,45 @@ class ConvDecimal() {
             println("TODO(convert bigdecimal to any radix)....\n")
         }
     }
-
 }
+
+
+/**
+ * Bigdecimalの少数付き基数変換
+ * @args [inputVal] 元の値(BigDecimal)
+ * @args [radix] 変換したい基数
+ * @return return 小数点以下部分を文字列で返す 0.xxxx
+ */
+fun toFraction(inputVal: BigDecimal, radix: Int): String {
+    var fract = inputVal - inputVal.toInt().toBigDecimal()
+
+    var retStr = "0."
+    var condt = true
+    var i = 0
+    while (condt) {
+        i++
+        val test = fract * radix.toBigDecimal()
+        val chk = test.toInt().toBigDecimal()
+        fract = test - chk
+        retStr += chk.toInt().toString()
+        if (fract == BigDecimal.ZERO) condt = false
+        if (5 < i) condt = false
+    }
+    val roundBound = radix / 2
+    //round-up by half-of-base
+    println("last:${retStr.last()},,round in ${roundBound}..${radix}")
+
+    if (retStr.last().toInt() in roundBound..radix) {
+        retStr = retStr.dropLast(1)
+        val rounder = retStr.last().toInt() + 1
+        retStr = retStr.dropLast(1)
+        retStr += rounder
+    } else {
+        retStr = retStr.dropLast(1)
+    }
+    return retStr
+}
+
 
 class Converter() {
     var inputDec: BigInteger = BigInteger.ZERO
@@ -242,3 +281,4 @@ class Converter() {
     }
 
 }
+
