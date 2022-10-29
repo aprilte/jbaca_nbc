@@ -16,7 +16,6 @@ class ConvDecimal() {
     var inputDec: BigInteger = BigInteger.ZERO
     var inputFloat: BigDecimal = BigDecimal.ZERO
     var floater = false
-    var inputSomething:String = ""
     var status: Boolean = false
     var mode: String = "From"
     var fromRadix: Int = 10
@@ -59,9 +58,7 @@ class ConvDecimal() {
         }
     }
 
-    fun isEnableRadix(): Boolean {
-        return (1 < fromRadix) && (1 < toRadix)
-    }
+    fun isEnableRadix(): Boolean = (1 < fromRadix) && (1 < toRadix)
 
     fun sconv() {
         this.convSeq = "do"
@@ -73,13 +70,11 @@ class ConvDecimal() {
             val regm = Regex("[0-9a-zA-Z]+")
             val regmf = Regex("[0-9a-zA-Z]+\\.[0-9a-zA-Z]+")
             if (regmf.matches(inputter)) {
-                this.inputSomething = inputter
-                this.inputFloat = toGoodDecimal(this.inputSomething, this.fromRadix)
+                this.inputFloat = toGoodDecimal(inputter, this.fromRadix)
                 this.floater = true
             } else {
                 if (regm.matches(inputter)) {
-                    this.inputSomething = inputter
-                    this.inputDec = inputSomething.toBigInteger(this.fromRadix)
+                    this.inputDec = inputter.toBigInteger(this.fromRadix)
                     this.floater = false
                 } else {
                     println("invalid input format, 0-9_a-z_A-Z_'.'")
@@ -105,10 +100,8 @@ class ConvDecimal() {
  * @return return 変換結果を文字列で返す XXX.xxxxx
  */
 fun toFraction(inputVal: BigDecimal, radix: Int): String {
-//    println("in the fun-toFraction, origin:" + inputVal)
     val intPartStr = inputVal.toBigInteger().toString(radix)
     var fract = inputVal - inputVal.toInt().toBigDecimal()
-//    println("in the fun-toFraction:" + intPartStr)
     var retStr = intPartStr + "."
     var condt = true
     var i = 0
@@ -121,16 +114,6 @@ fun toFraction(inputVal: BigDecimal, radix: Int): String {
         if (fract == BigDecimal.ZERO) condt = false
         if (ROUND_TABLE <= i) condt = false
     }
-//    val roundBound = radix / 2
-//    if (retStr.last().toString().toBigInteger(radix).toInt() in roundBound..radix) {
-//        println("ROUND TRUE")
-//        retStr = retStr.dropLast(1)
-//        val rounder = retStr.last().toInt() + 1
-//        retStr = retStr.dropLast(1)
-//        retStr += rounder
-//    } else {
-//        retStr = retStr.dropLast(1)
-//    }
     return retStr
 }
 
@@ -150,7 +133,6 @@ fun toGoodDecimal(inStr: String, radix: Int): BigDecimal {
     } else {
         intPart = inSep[0].toBigInteger(radix)
     }
-
     return intPart.toBigDecimal() + fractPart
 }
 
