@@ -3,7 +3,7 @@ hyperskill_project:
   ide_files: https://stepik.org/media/attachments/lesson/495737/additional_files.json
   is_template_based: false
   use_ide: true
-update_date: Fri, 21 Oct 2022 11:33:03 UTC
+update_date: Sat, 29 Oct 2022 10:55:11 UTC
 stages:
 - id: 856
   step: 12345
@@ -92,6 +92,8 @@ topics:
     theory_id: 4389
   - title: Declaring functions
     theory_id: 4580
+  - title: Errors in programs
+    theory_id: 11559
   - title: Introduction to OOP
     theory_id: 3614
   - title: Objects
@@ -136,8 +138,6 @@ topics:
     theory_id: 14368
   - title: Debugging simple constructs
     theory_id: 15503
-  - title: Errors in programs
-    theory_id: 11559
   - title: What is an exception
     theory_id: 7243
   2:

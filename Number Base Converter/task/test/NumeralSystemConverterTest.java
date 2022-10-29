@@ -1,3 +1,5 @@
+package hstest;
+
 import org.hyperskill.hstest.exception.outcomes.WrongAnswer;
 import org.hyperskill.hstest.stage.StageTest;
 import org.hyperskill.hstest.testcase.CheckResult;
@@ -90,8 +92,8 @@ public class NumeralSystemConverterTest extends StageTest<String> {
                                              "(To go back type /back)\"");
         }
         
-        randomDecimal = Generator.getRandomSourceNumber(10, false);
-        actualResult = Converter.decimalToBaseX(randomDecimal, 2);
+        randomDecimal = hstest.Generator_HsTest.getRandomSourceNumber(10, false);
+        actualResult = hstest.Converter_HsTest.decimalToBaseX(randomDecimal, 2);
         
         output = main.execute(randomDecimal).toLowerCase();
         lines = output.split("\n");
@@ -143,7 +145,7 @@ public class NumeralSystemConverterTest extends StageTest<String> {
         
         main.start();
         main.execute("10 2");
-        main.execute(Generator.getRandomSourceNumber(10, false));
+        main.execute(hstest.Generator_HsTest.getRandomSourceNumber(10, false));
         
         output = main.execute("/back").toLowerCase();
         if (!output.contains("/exit")) {
@@ -152,7 +154,7 @@ public class NumeralSystemConverterTest extends StageTest<String> {
         }
         
         main.execute("10 8");
-        output = main.execute(Generator.getRandomSourceNumber(10, false)).toLowerCase();
+        output = main.execute(hstest.Generator_HsTest.getRandomSourceNumber(10, false)).toLowerCase();
         
         lines = output.split("\n");
         lastLine = lines[lines.length - 1];
@@ -211,8 +213,8 @@ public class NumeralSystemConverterTest extends StageTest<String> {
                                            "(To go back type /back)\"");
                 }
                 
-                randomBigInteger = Generator.getRandomBigInteger(sourceBase, false);
-                actualResult = Converter
+                randomBigInteger = hstest.Generator_HsTest.getRandomBigInteger(sourceBase, false);
+                actualResult = hstest.Converter_HsTest
                         .convertSourceToTargetBase(randomBigInteger, sourceBase, targetBase
                                 , false);
                 
@@ -293,8 +295,8 @@ public class NumeralSystemConverterTest extends StageTest<String> {
                                            "(To go back type /back)\"");
                 }
                 
-                randomBigInteger = Generator.getRandomBigInteger(sourceBase, false);
-                actualResult = Converter
+                randomBigInteger = hstest.Generator_HsTest.getRandomBigInteger(sourceBase, false);
+                actualResult = hstest.Converter_HsTest
                         .convertSourceToTargetBase(randomBigInteger, sourceBase, targetBase
                                 , false);
                 
@@ -376,8 +378,8 @@ public class NumeralSystemConverterTest extends StageTest<String> {
                                            "(To go back type /back)\"");
                 }
                 
-                randomFraction = Generator.getRandomSourceNumber(sourceBase, true);
-                actualResult = Converter.convertSourceToTargetBase(randomFraction,
+                randomFraction = hstest.Generator_HsTest.getRandomSourceNumber(sourceBase, true);
+                actualResult = hstest.Converter_HsTest.convertSourceToTargetBase(randomFraction,
                                                                    sourceBase,
                                                                    targetBase, true);
                 
@@ -478,8 +480,8 @@ public class NumeralSystemConverterTest extends StageTest<String> {
                                            "(To go back type /back)\"");
                 }
                 
-                randomFraction = Generator.getRandomSourceNumber(sourceBase, true);
-                actualResult = Converter.convertSourceToTargetBase(randomFraction,
+                randomFraction = hstest.Generator_HsTest.getRandomSourceNumber(sourceBase, true);
+                actualResult = hstest.Converter_HsTest.convertSourceToTargetBase(randomFraction,
                                                                    sourceBase,
                                                                    targetBase, true);
                 
@@ -550,7 +552,7 @@ public class NumeralSystemConverterTest extends StageTest<String> {
         
         main.start();
         
-        Converter.setIsBigDec(true);
+        hstest.Converter_HsTest.setIsBigDec(true);
         
         for (int sourceBase = 2; sourceBase <= 18; sourceBase += 3) {
             
@@ -579,8 +581,8 @@ public class NumeralSystemConverterTest extends StageTest<String> {
                                            "(To go back type /back)\"");
                 }
                 
-                randomFraction = Generator.getRandomBigInteger(sourceBase, true);
-                actualResult = Converter.convertSourceToTargetBase(randomFraction,
+                randomFraction = hstest.Generator_HsTest.getRandomBigInteger(sourceBase, true);
+                actualResult = hstest.Converter_HsTest.convertSourceToTargetBase(randomFraction,
                                                                    sourceBase,
                                                                    targetBase, true);
                 
@@ -606,7 +608,7 @@ public class NumeralSystemConverterTest extends StageTest<String> {
                                                      "be 5 digits in length");
                 }
                 
-                boolean correct = CheckConversion.check(userResult, actualResult);
+                boolean correct = hstest.CheckConversion_HsTest.check(userResult, actualResult);
                 if (!correct) {
                     return CheckResult.wrong("The conversion result of your program is wrong\n" +
                         "Your answer:\n" + userResult + "\n" +
@@ -680,8 +682,8 @@ public class NumeralSystemConverterTest extends StageTest<String> {
                                            "(To go back type /back)\"");
                 }
                 
-                randomFraction = Generator.getRandomBigInteger(sourceBase, true);
-                actualResult = Converter.convertSourceToTargetBase(randomFraction,
+                randomFraction = hstest.Generator_HsTest.getRandomBigInteger(sourceBase, true);
+                actualResult = hstest.Converter_HsTest.convertSourceToTargetBase(randomFraction,
                                                                    sourceBase,
                                                                    targetBase, true);
                 
@@ -707,7 +709,7 @@ public class NumeralSystemConverterTest extends StageTest<String> {
                                                      "be 5 digits in length");
                 }
                 
-                boolean correct = CheckConversion.check(userResult, actualResult);
+                boolean correct = hstest.CheckConversion_HsTest.check(userResult, actualResult);
                 if (!correct) {
                     return CheckResult.wrong("The conversion result of your program is wrong\n" +
                         "Your answer:\n" + userResult + "\n" +
@@ -743,7 +745,7 @@ public class NumeralSystemConverterTest extends StageTest<String> {
     
 }
 
-class Generator {
+class Generator_HsTest {
     
     private static String dec;
     
@@ -753,7 +755,7 @@ class Generator {
             double number = new Random().nextDouble() * 1000;
             dec = String.valueOf(number);
             
-            return Converter.fractionToBaseX(dec, sourceBase);
+            return hstest.Converter_HsTest.fractionToBaseX(dec, sourceBase);
         } else {
             int n = new Random().nextInt(1000);
             
@@ -778,7 +780,7 @@ class Generator {
             actualRandomDec = actualRandomDec.setScale(10, RoundingMode.FLOOR);
             dec = actualRandomDec.toString();
             
-            return Converter.fractionToBaseX(dec, sourceBase);
+            return hstest.Converter_HsTest.fractionToBaseX(dec, sourceBase);
         } else {
             
             BigInteger upperLimit = new BigInteger("500000000000000");
@@ -793,7 +795,7 @@ class Generator {
     }
 }
 
-class Converter {
+class Converter_HsTest {
     
     static boolean isBigDec = false;
     
@@ -820,7 +822,7 @@ class Converter {
         if (fraction) {
             
             //Step 1- Convert to decimal
-            String decimalResult = isBigDec ? Generator.getDec() : baseXToDecimalFraction(number,
+            String decimalResult = isBigDec ? hstest.Generator_HsTest.getDec() : baseXToDecimalFraction(number,
                                                                                           number.length(),
                                                                                           sourceBase);
             
@@ -972,7 +974,7 @@ class Converter {
     
 }
 
-class CheckConversion {
+class CheckConversion_HsTest {
     
     static boolean check (String userResult, String actualResult) {
         
